@@ -31,13 +31,10 @@ export function isCuaDevModeRequested(env: EnvRecord = process.env): boolean {
   return explicit === "1" || explicit === "true" || explicit === "on";
 }
 
-export function isZCodeCuaInternalFeatureEnabled(env: EnvRecord = process.env): boolean {
-  // CUA 现已默认打包进正式版（plugin staged + Helper enabled），不再需要显式 env flag。
-  // DEV_MODE 仍然 implied（开发一键），PRODUCT_HELPER=0/off/false 可显式关闭。
-  if (isCuaDevModeRequested(env)) return true;
-  const explicit = env[ZCODE_CUA_PRODUCT_HELPER_ENV_KEY]?.trim().toLowerCase();
-  if (explicit === "0" || explicit === "false" || explicit === "off") return false;
-  return true;
+export function isZCodeCuaInternalFeatureEnabled(_env: EnvRecord = process.env): boolean {
+  // planner 裁剪：app-server 移除 computer-use（官方插件定义已删除）。
+  // feature flag 恒 false，任何残留的 CUA 恢复/注册路径都不再激活。
+  return false;
 }
 
 const SANITIZED_RUNTIME_ENV_KEYS = [

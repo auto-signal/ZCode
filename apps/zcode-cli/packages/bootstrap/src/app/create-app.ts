@@ -533,7 +533,8 @@ export async function createZCodeApp(options: ZCodeAppOptions): Promise<ZCodeApp
         modelIoDir,
         modelIoFullRetentionEnabled: options.modelIoFullRetentionEnabled,
         executionConfig: modelExecutionConfig,
-        statusSink: modelTelemetry.statusSink,
+        // telemetry 裁剪后为 no-op 桩,不再提供 statusSink。
+        ...(modelTelemetry.statusSink ? { statusSink: modelTelemetry.statusSink } : {}),
         streamIdleTimeoutMs: configResult.config.modelStream.idleTimeoutMs,
       });
     if (options.modelAdapter && modelTelemetry.statusSink) {

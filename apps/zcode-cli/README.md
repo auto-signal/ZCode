@@ -16,7 +16,6 @@ TypeScript + Node.js 24.14.0 CLI starter. The default artifact is a normal Node 
 npm run bootstrap
 npm run dev -- --help
 npm run build
-npm run start -- doctor --json
 npm test
 npm run sea
 npm run sea -- --target linux-x64 --target win-x64
@@ -50,13 +49,7 @@ Plugin state lives under `~/.zcode/cli/plugins`:
 
 This repository also ships built-in official plugins as workspace packages. The bundled Browser Use, Document Skills, Skill Creator, and ZCode Guide content plugins are default-enabled and appear as `browser-use@zcode-plugins-official`, `document-skills@zcode-plugins-official`, `skill-creator@zcode-plugins-official`, and `zcode-guide@zcode-plugins-official`. Runtime-heavy official plugins, and local-data migration plugins such as `ios-simulator@zcode-plugins-official`, `android-emulator@zcode-plugins-official`, and `restore-legacy-sessions@zcode-plugins-official`, are discovered by zcode but stay disabled until the user enables them.
 
-```sh
-zcode plugins list
-zcode plugins enable ios-simulator
-zcode plugins disable browser-use
-zcode plugins enable restore-legacy-sessions
-zcode plugins disable ios-simulator
-```
+The CLI bundle only exposes `app-server` (see `packages/cli/spec/cli-surface.md`); there are no interactive plugin management commands. Enable plugins through the user config (`plugins.dirs` / marketplace state under `~/.zcode/cli/plugins`) or the desktop app.
 
 For local plugin development, put the plugin in any directory, then add it to the user config. Local plugin dirs default to enabled for that config.
 
@@ -177,7 +170,7 @@ Supported server types:
 - `http`: requires `url`; accepts `headers`, `enabled`, and `timeoutMs`.
 - `sse`: requires `url`; accepts `headers`, `enabled`, and `timeoutMs`.
 
-MCP tools are registered before the first model request and exposed as `mcp__<server>__<tool>`. Use `/mcp list`, `/mcp status`, `/mcp connect <server>`, and `/mcp disconnect <server>` inside the CLI to inspect or manage configured servers for the current session.
+MCP tools are registered before the first model request and exposed as `mcp__<server>__<tool>`. MCP server state is served and mutated through the ZCode Protocol (e.g. from the desktop app) rather than in-CLI slash commands.
 
 ## Hooks Configuration
 
